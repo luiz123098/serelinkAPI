@@ -21,8 +21,9 @@ public class UserService {
         }
     }
 
-    public User findUser(User user){
-        return userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword())
-                .orElseThrow(() -> new BusinessRules("User not found"));
+    public User findUser(String login, String password){
+        return userRepository.findByLoginAndPassword(login, password)
+                .orElseThrow(() -> new BusinessRules("User not found or invalid credentials"));
     }
+
 }

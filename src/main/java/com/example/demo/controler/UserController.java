@@ -34,8 +34,7 @@ public class UserController {
     @PostMapping(path = "/logIn")
     public ResponseEntity<User> getUser(@RequestBody UserDTO userDTO) {
         try {
-            User userReq = new User( userDTO.getLogin(), userDTO.getPassword() );
-            User userRes = userService.findUser( userReq );
+            User userRes = userService.findUser( userDTO.getLogin(), userDTO.getPassword() );
 
            return new ResponseEntity<>(userRes, HttpStatus.ACCEPTED);
         } catch (Exception e) {
