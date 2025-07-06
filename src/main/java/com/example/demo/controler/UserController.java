@@ -31,7 +31,7 @@ public class UserController {
             return new ResponseEntity(new BusinessRules("Sign In error"), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping(path = "/logIn")
+    @PostMapping(path = "/logIn")
     public ResponseEntity<User> getUser(@RequestBody UserDTO userDTO) {
         try {
             User userReq = new User( userDTO.getLogin(), userDTO.getPassword() );
