@@ -6,10 +6,7 @@ import com.example.demo.model.exceptions.exceptions.BusinessRules;
 import com.example.demo.model.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +29,24 @@ public class UserController {
         }
     }
     @PostMapping(path = "/logIn")
-    public ResponseEntity<User> getUser(@RequestBody UserDTO userDTO) {
-        try {
-            User userRes = userService.findUser( userDTO.getLogin(), userDTO.getPassword() );
+    public ResponseEntity<?> getUser(@RequestBody UserDTO userDTO) {
+        User user = userService.findUser(userDTO.getLogin(), userDTO.getPassword());
 
-           return new ResponseEntity<>(userRes, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            throw new BusinessRules("Log in error");
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login or password");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @DeleteMapping(path = "delete-user")
+    public ResponseEntity deleteUser(@RequestBody UserDTO userDTO) {
+        try {
+            User userRes = userService.findUser(userDTO.getLogin(), userDTO.getPassword());
+            userService.deleteById(userRes);
+            return new ResponseEntity(new BusinessRules("User deleted"), HttpStatus.ACCEPTED);
+        }catch (Exception e) {
+            throw new BusinessRules("Error deleting user");
         }
     }
 }

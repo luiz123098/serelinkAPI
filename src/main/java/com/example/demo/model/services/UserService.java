@@ -23,7 +23,19 @@ public class UserService {
 
     public User findUser(String login, String password){
         return userRepository.findByLoginAndPassword(login, password)
-                .orElseThrow(() -> new BusinessRules("User not found or invalid credentials"));
+                .orElse(null);
     }
 
+    public Boolean deleteById(User user) {
+        try {
+            if (user.getId() != null) {
+                userRepository.deleteById(user.getId());
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new BusinessRules("Fail to delete");
+        }
+    }
 }

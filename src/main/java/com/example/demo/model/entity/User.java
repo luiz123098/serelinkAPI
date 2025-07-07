@@ -16,8 +16,11 @@ public class User {
     @Column(name = "name",nullable = false)
     private String name;
 
-    public User(String login, String password, String name) {this.login = login;this.password = password;this.name = name;}
-    public User(String login, String password) {this.login = login;this.password = password;}
+
+    public User(){}
+    public User(Long id) {this.id = id;}
+    public User(String login, String password){this.login = login; this.password = password;}
+    public User(String login, String password, String name){this.login = login; this.password = password; this.name = name;}
 
     public Long getId() {return id;    }
     public void setId(Long id) {this.id = id;}
